@@ -1,0 +1,176 @@
++------------------+
+|     Supplier     |
++------------------+
+| PK supplier_id   |
+| name             |
+| contact_name     |
+| phone            |
+| email            |
+| address          |
++--------+---------+
+         |
+         | 1
+         |
+         | N
++---------------------+
+|   Purchase_Order    |
++---------------------+
+| PK po_id            |
+| FK supplier_id      |
+| order_date          |
+| expected_date       |
+| status              |
++----------+----------+
+           |
+           | 1
+           |
+           | N
++---------------------+
+|      PO_Line        |
++---------------------+
+| PK po_line_id       |
+| FK po_id            |
+| FK product_id       |
+| ordered_quantity    |
+| unit_cost           |
+| received_quantity   |
++----------+----------+
+           |
+           | N
+           |
+           | 1
++----------------------+
+|       Product        |
++----------------------+
+| PK product_id        |
+| name                 |
+| sku                  |
+| category             |
+| unit_of_measure      |
+| cost_method (FIFO)   |
++----------+-----------+
+           |
+           | 1
+           |
+           | N
++----------------------+
+|         Lot          |
++----------------------+
+| PK lot_id            |
+| FK product_id        |
+| FK supplier_id       |
+| lot_number           |
+| received_date        |
+| expiration_date      |
+| original_quantity    |
+| remaining_quantity   |
+| unit_cost            |
++----------+-----------+
+           |
+           |
+           | N
+           |
+           | 1
++-----------------------------+
+|    Inventory_Transaction    |
++-----------------------------+
+| PK transaction_id           |
+| FK product_id               |
+| FK lot_id                   |
+| transaction_type            |
+| quantity_change             |
+| unit_cost                   |
+| reference_type              |
+| reference_id                |
+| transaction_date            |
++-----------------------------+
+
+
++------------------+
+|     Customer     |
++------------------+
+| PK customer_id   |
+| name             |
+| phone            |
+| email            |
+| billing_address  |
+| shipping_address |
++--------+---------+
+         |
+         | 1
+         |
+         | N
++---------------------+
+|     Sales_Order     |
++---------------------+
+| PK sales_order_id   |
+| FK customer_id      |
+| order_date          |
+| status              |
+| total_amount        |
++----------+----------+
+           |
+           | 1
+           |
+           | N
++------------------------+
+|    Sales_Order_Line    |
++------------------------+
+| PK so_line_id          |
+| FK sales_order_id      |
+| FK product_id          |
+| quantity               |
+| unit_price             |
++-----------+------------+
+            |
+            | (creates)
+            |
+            v
+     Inventory_Transaction
+
+
++----------------------+
+| Inventory_Adjustment |
++----------------------+
+| PK adjustment_id     |
+| reason               |
+| created_by           |
+| created_date         |
++----------+-----------+
+           |
+           | 1
+           |
+           | N
++----------------------+
+|    Adjustment_Line   |
++----------------------+
+| PK adjustment_line   |
+| FK adjustment_id     |
+| FK product_id        |
+| FK lot_id            |
+| quantity_change      |
++----------------------+
+
+
++----------------------+
+|       Invoice        |
++----------------------+
+| PK invoice_id        |
+| FK sales_order_id    |
+| invoice_date         |
+| total_amount         |
+| status               |
++----------+-----------+
+           |
+           | 1
+           |
+           | N
++----------------------+
+|       Payment        |
++----------------------+
+| PK payment_id        |
+| FK invoice_id        |
+| payment_date         |
+| amount               |
+| payment_method       |
++----------------------+
