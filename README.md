@@ -17,3 +17,5 @@ Core capabilities include:
 * Inventory adjustments
 
 The system is designed around **auditability**, **traceability**, and **accurate cost tracking**.
+
+
