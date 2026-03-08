@@ -20,10 +20,10 @@ public class Product {
     private String sku;
 
     @Column
-    private BigDecimal price; // How much you sell the product for
+    private BigDecimal price; // How much to sell Product for
 
     @Column
-    private BigDecimal cost; // How much you pay to acquire the product
+    private BigDecimal cost; // How much to pay to acquire Product
 
     @Column
     private BigDecimal quantity;
