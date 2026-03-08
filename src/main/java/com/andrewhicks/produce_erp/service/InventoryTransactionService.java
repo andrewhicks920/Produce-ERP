@@ -52,6 +52,9 @@ public class InventoryTransactionService {
                 break;
 
             case SALE:
+                if (currentQuantity < transactionQuantity)
+                    throw new RuntimeException("Not enough inventory!");
+
                 product.setQuantity(currentQuantity - transactionQuantity);
                 break;
 

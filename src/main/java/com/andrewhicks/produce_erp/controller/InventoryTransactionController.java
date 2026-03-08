@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/transactions")
 public class InventoryTransactionController {
-
     private final InventoryTransactionService service;
 
     public InventoryTransactionController(InventoryTransactionService service) {
