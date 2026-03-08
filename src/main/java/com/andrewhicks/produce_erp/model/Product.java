@@ -27,8 +27,4 @@ public class Product {
     private BigDecimal cost; // How much to pay to acquire Product
 
     private Integer quantity; // Current inventory level
-
-    @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = true)
-    private Supplier supplier;
 }

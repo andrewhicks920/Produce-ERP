@@ -4,9 +4,6 @@
 | PK supplier_id   |
 | name             |
 | contact_name     |
-| phone            |
-| email            |
-| address          |
 +--------+---------+
          |
          | 1
