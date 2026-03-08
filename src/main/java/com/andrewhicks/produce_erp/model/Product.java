@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
@@ -21,12 +22,24 @@ public class Product {
     @Column(unique = true, nullable = false)
     private String sku;
 
-    @Column
     private BigDecimal price; // How much to sell Product for
 
-    @Column
     private BigDecimal cost; // How much to pay to acquire Product
 
     private Integer quantity; // Current inventory level
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
 }
