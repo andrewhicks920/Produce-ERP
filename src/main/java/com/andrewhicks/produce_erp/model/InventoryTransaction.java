@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 public class InventoryTransaction {
+    private enum TransactionType {
+        PURCHASE,
+        SALE,
+        ADJUSTMENT
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +24,8 @@ public class InventoryTransaction {
 
     private Integer quantity;
 
-    private String type; // PURCHASE, SALE, ADJUSTMENT
+    @Enumerated(EnumType.STRING)
+    private TransactionType type; // PURCHASE, SALE, ADJUSTMENT
 
     private LocalDateTime transactionDate = LocalDateTime.now();
 }
