@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 @Table(name = "products")
 @Data
 public class Product {
+
+    // Don't be an idiot like me and put an ID attribute in the POST request
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +27,7 @@ public class Product {
     @Column
     private BigDecimal cost; // How much to pay to acquire Product
 
-    @Column
-    private BigDecimal quantity;
+    @Column(nullable = false)
+    private Integer quantity; // Current inventory level
 
 }

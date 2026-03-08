@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 public class InventoryTransaction {
-    private enum TransactionType {
+    public enum TransactionType {
         PURCHASE,
         SALE,
         ADJUSTMENT
