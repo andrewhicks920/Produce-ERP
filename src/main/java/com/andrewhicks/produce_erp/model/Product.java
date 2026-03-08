@@ -28,18 +28,7 @@ public class Product {
 
     private Integer quantity; // Current inventory level
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
+    @ManyToOne
+    @JoinColumn(name = "supplier_id", nullable = true)
+    private Supplier supplier;
 }
