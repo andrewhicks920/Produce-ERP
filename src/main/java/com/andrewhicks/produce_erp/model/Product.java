@@ -27,7 +27,6 @@ public class Product {
     @Column
     private BigDecimal cost; // How much to pay to acquire Product
 
-    @Column(nullable = false)
     private Integer quantity; // Current inventory level
 
 }
