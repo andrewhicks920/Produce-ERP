@@ -2,8 +2,6 @@ package com.andrewhicks.produce_erp.controller;
 
 import com.andrewhicks.produce_erp.model.Product;
 import com.andrewhicks.produce_erp.service.ProductService;
-import com.andrewhicks.produce_erp.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,17 +26,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public Product getProductByID(@PathVariable Long id) {
         return service.getProductById(id);
     }
 
     @PutMapping("/{id}")
-    public Product updateProductById(@PathVariable Long id, @RequestBody Product product) {
+    public Product updateProductByID(@PathVariable Long id, @RequestBody Product product) {
         return service.updateProduct(id, product);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProductById(@PathVariable Long id) {
+    public void deleteProductByID(@PathVariable Long id) {
         service.deleteProduct(id);
     }
 }

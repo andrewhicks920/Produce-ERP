@@ -4,7 +4,6 @@ import com.andrewhicks.produce_erp.model.Supplier;
 import com.andrewhicks.produce_erp.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,10 +19,6 @@ import java.util.List;
  *   SupplierController (via REST API)
  *   PurchaseOrderService.create() — to validate and attach the supplier
  *   LotService.create() — to validate and attach the supplier to new lots
- *
- * @Transactional on the class means every public method runs within a database
- * transaction. Read-only methods inherit this but could be annotated with
- * @Transactional(readOnly = true) for a slight performance improvement.
  */
 @Service
 @RequiredArgsConstructor
@@ -34,7 +29,7 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Supplier findById(Long id) {
+    public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
     }
@@ -51,8 +46,9 @@ public class SupplierService {
 
     // Updates the name and contact name of an existing supplier.
     // Fetches the existing record first to ensure it exists, then applies changes.
-    public Supplier update(Long id, Supplier updated) {
-        Supplier existing = findById(id);
+    public Supplier updateSupplier(Long id, Supplier updated) {
+        Supplier existing = getSupplierById(id);
+
         existing.setName(updated.getName());
         existing.setContactName(updated.getContactName());
         return supplierRepository.save(existing);
@@ -63,8 +59,8 @@ public class SupplierService {
      * Note: if the supplier has associated PurchaseOrders or Lots, the database
      * will throw a constraint violation. Add a check here if soft-deletes are needed.
      */
-    public void delete(Long id) {
-        findById(id);
+    public void deleteSupplier(Long id) {
+        getSupplierById(id);
         supplierRepository.deleteById(id);
     }
 }

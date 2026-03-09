@@ -24,17 +24,37 @@ import java.util.List;
 @RequiredArgsConstructor // Basically injects public SupplierController(SupplierService service) {this.service = service;} w/o having to write it
 @RequestMapping("/suppliers")
 public class SupplierController {
-    private final SupplierService service; // But using this I have to declare this as final
-
+    private final SupplierService supplierService; // But using this I have to declare this as final
 
     @GetMapping
     public List<Supplier> getAllSuppliers() {
-        return service.getAllSuppliers();
+        return supplierService.getAllSuppliers();
+    }
+
+    @GetMapping("/{id}")
+    public Supplier getSupplierByID(@PathVariable Long id) {
+        return supplierService.getSupplierById(id);
     }
 
     @PostMapping
     public Supplier createSupplier(@RequestBody Supplier supplier) {
-        return service.createSupplier(supplier);
+        return supplierService.createSupplier(supplier);
     }
+
+    // Updates name & contactName of existing Supplier
+    @PutMapping("/{id}")
+    public Supplier updateSupplierByID(@PathVariable Long id, @RequestBody Supplier supplier) {
+        return supplierService.updateSupplier(id, supplier);
+    }
+
+    @DeleteMapping
+    public void deleteSupplierByID(@PathVariable Long id) {
+        supplierService.deleteSupplier(id);
+    }
+
+
+
+
+
 
 }

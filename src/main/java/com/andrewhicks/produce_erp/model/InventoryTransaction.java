@@ -22,9 +22,6 @@ public class InventoryTransaction {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    private Warehouse warehouse;
-
     private Integer quantity;
 
     @Enumerated(EnumType.STRING)
