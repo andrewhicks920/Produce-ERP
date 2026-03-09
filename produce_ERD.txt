@@ -88,10 +88,6 @@
 +------------------+
 | PK customer_id   |
 | name             |
-| phone            |
-| email            |
-| billing_address  |
-| shipping_address |
 +--------+---------+
          |
          | 1
