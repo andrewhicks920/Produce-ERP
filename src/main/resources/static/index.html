@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProduceERP — Enterprise Resource Planning</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="app-layout">
+
+    <!-- ═══════════════════════════════════════════════
+         SIDEBAR NAVIGATION
+    ════════════════════════════════════════════════ -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">&#9652;</span>
+          <div class="logo-text">
+            <span class="logo-name">ProduceERP</span>
+            <span class="logo-tagline">Enterprise Resource Planning</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Primary navigation">
+        <ul class="nav-list" role="list">
+          <li class="nav-item active" data-view="dashboard" role="listitem">
+            <span class="nav-icon" aria-hidden="true">&#9632;</span>
+            <span class="nav-label">Dashboard</span>
+          </li>
+          <li class="nav-item" data-view="products" role="listitem">
+            <span class="nav-icon" aria-hidden="true">&#9643;</span>
+            <span class="nav-label">Products</span>
+          </li>
+          <li class="nav-item" data-view="suppliers" role="listitem">
+            <span class="nav-icon" aria-hidden="true">&#9651;</span>
+            <span class="nav-label">Suppliers</span>
+          </li>
+          <li class="nav-item" data-view="purchase-orders" role="listitem">
+            <span class="nav-icon" aria-hidden="true">&#9636;</span>
+            <span class="nav-label">Purchase Orders</span>
+          </li>
+          <li class="nav-item" data-view="transactions" role="listitem">
+            <span class="nav-icon" aria-hidden="true">&#9654;</span>
+            <span class="nav-label">Transactions</span>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="sidebar-footer-text">v1.0.0 &mdash; Internal Tool</span>
+      </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════
+         MAIN WRAPPER
+    ════════════════════════════════════════════════ -->
+    <div class="main-wrapper">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title" id="page-title">Dashboard</h1>
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb-list">
+              <li class="breadcrumb-item"><span>Home</span></li>
+              <li class="breadcrumb-item active" id="breadcrumb-current" aria-current="page">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="topbar-right">
+          <button id="add-btn" class="btn btn-primary hidden" type="button">
+            <span class="btn-icon" aria-hidden="true">+</span>
+            <span id="add-btn-label">Add</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT AREA -->
+      <main class="content-area" id="view-container" role="main">
+        <!-- Dynamic content rendered here by app.js -->
+        <div class="loading-state" id="initial-loader">
+          <div class="spinner"></div>
+          <p>Loading&hellip;</p>
+        </div>
+      </main>
+
+    </div><!-- /.main-wrapper -->
+  </div><!-- /.app-layout -->
+
+  <!-- ═══════════════════════════════════════════════
+       MODAL OVERLAY
+  ════════════════════════════════════════════════ -->
+  <div id="modal-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" role="document">
+      <header class="modal-header">
+        <h2 class="modal-title" id="modal-title">Dialog</h2>
+        <button class="modal-close" id="modal-close-btn" type="button" aria-label="Close dialog">&times;</button>
+      </header>
+      <div class="modal-body" id="modal-body">
+        <!-- Form injected by JS -->
+      </div>
+      <footer class="modal-footer" id="modal-footer">
+        <button class="btn btn-ghost" id="modal-cancel-btn" type="button">Cancel</button>
+        <button class="btn btn-primary" id="modal-submit-btn" type="button">Save</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       TOAST NOTIFICATION CONTAINER
+  ════════════════════════════════════════════════ -->
+  <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       GLOBAL LOADING SPINNER OVERLAY
+  ════════════════════════════════════════════════ -->
+  <div id="spinner-overlay" class="spinner-overlay hidden" aria-hidden="true">
+    <div class="spinner spinner-lg"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
