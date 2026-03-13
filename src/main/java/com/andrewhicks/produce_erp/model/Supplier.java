@@ -1,38 +1,52 @@
 package com.andrewhicks.produce_erp.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-
+/**
+ * Represents a supplier — a vendor from whom the business purchases products.
+ *
+ * Suppliers sit at the top of the purchasing chain:
+ *   Supplier → PurchaseOrder → PoLine → (on receipt) → Lot + InventoryTransaction
+ *
+ * A Supplier can have many PurchaseOrders over time. When goods are received
+ * against those orders, Lots are created and linked back to the originating Supplier
+ * for traceability (e.g. "which supplier did this batch come from?").
+ *
+ * Database table: supplier
+ */
 @Entity
 @Table(name = "supplier")
-@Data
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Supplier {
 
+    /** Primary key, auto-incremented by the database. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "supplier_id")
+    private Long supplierId;
 
-    // Company or trading name of given Supplier
+    /** The company or trading name of the supplier. */
+    @Column(nullable = false)
     private String name;
 
-    // The name of primary contact @ this Supplier
+    /** The name of the primary contact person at this supplier. */
     @Column(name = "contact_name")
     private String contactName;
 
-     // All purchase orders raised against this supplier.
-     // Lazily loaded to avoid fetching full order history on every Supplier lookup
+    /**
+     * All purchase orders raised against this supplier.
+     * Lazily loaded to avoid fetching the full order history on every supplier lookup.
+     */
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PurchaseOrder> purchaseOrders;
 
-
-    // All inventory lots that originated from this supplier.
-    // Used for supplier-level traceability (e.g. product recall management).
-    // @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // private List<Lot> lots;
-
-    // Obvipusly, this hasnt been added yet — but it will soon!
-
+    /**
+     * All inventory lots that originated from this supplier.
+     * Used for supplier-level traceability (e.g. product recall management).
+     */
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Lot> lots;
 }

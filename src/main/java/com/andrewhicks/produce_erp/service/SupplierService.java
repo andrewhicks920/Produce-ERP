@@ -1,9 +1,11 @@
 package com.andrewhicks.produce_erp.service;
 
+import com.andrewhicks.produce_erp.exception.ResourceNotFoundException;
 import com.andrewhicks.produce_erp.model.Supplier;
 import com.andrewhicks.produce_erp.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,36 +21,49 @@ import java.util.List;
  *   SupplierController (via REST API)
  *   PurchaseOrderService.create() — to validate and attach the supplier
  *   LotService.create() — to validate and attach the supplier to new lots
+ *
+ * @Transactional on the class means every public method runs within a database
+ * transaction. Read-only methods inherit this but could be annotated with
+ * @Transactional(readOnly = true) for a slight performance improvement.
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SupplierService {
+
     private final SupplierRepository supplierRepository;
 
-    public List<Supplier> getAllSuppliers() {
+    /** Returns all suppliers. No filtering applied. */
+    public List<Supplier> findAll() {
         return supplierRepository.findAll();
     }
 
-    public Supplier getSupplierById(Long id) {
+    /**
+     * Finds a supplier by ID or throws ResourceNotFoundException (HTTP 404).
+     * This method is also used internally by other services (e.g. PurchaseOrderService)
+     * to validate that a supplierId refers to a real supplier before using it.
+     */
+    public Supplier findById(Long id) {
         return supplierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
     }
 
-    // Case-insensitive name search. Returns all matches
+    /** Case-insensitive name search. Returns all matches. */
     public List<Supplier> searchByName(String name) {
         return supplierRepository.findByNameContainingIgnoreCase(name);
     }
 
-    // Persists a new supplier. No uniqueness constraint enforced
-    public Supplier createSupplier(Supplier supplier) {
+    /** Persists a new supplier. No uniqueness constraint enforced (add one if needed). */
+    public Supplier create(Supplier supplier) {
         return supplierRepository.save(supplier);
     }
 
-    // Updates the name and contact name of an existing supplier.
-    // Fetches the existing record first to ensure it exists, then applies changes.
-    public Supplier updateSupplier(Long id, Supplier updated) {
-        Supplier existing = getSupplierById(id);
-
+    /**
+     * Updates the name and contact name of an existing supplier.
+     * Fetches the existing record first to ensure it exists, then applies changes.
+     */
+    public Supplier update(Long id, Supplier updated) {
+        Supplier existing = findById(id);
         existing.setName(updated.getName());
         existing.setContactName(updated.getContactName());
         return supplierRepository.save(existing);
@@ -59,8 +74,8 @@ public class SupplierService {
      * Note: if the supplier has associated PurchaseOrders or Lots, the database
      * will throw a constraint violation. Add a check here if soft-deletes are needed.
      */
-    public void deleteSupplier(Long id) {
-        getSupplierById(id);
+    public void delete(Long id) {
+        findById(id); // ensures 404 is thrown if not found
         supplierRepository.deleteById(id);
     }
 }
