@@ -4,10 +4,7 @@
  * Architecture: Config → API → Utils → Render → Modal → Notify → Views → Navigation
  */
 
-/* ═══════════════════════════════════════════════════════════════════
-   CONFIG
-   Central constants for the application.
-════════════════════════════════════════════════════════════════════ */
+
 const Config = {
   BASE_URL: '',          // Served by Spring Boot on same origin — no prefix needed
   TOAST_DURATION: 3000, // ms before auto-dismiss
@@ -15,10 +12,7 @@ const Config = {
   TX_TYPES: ['PURCHASE', 'SALE', 'ADJUSTMENT'],
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   API
-   Central fetch wrapper. All network calls go through `apiFetch`.
-════════════════════════════════════════════════════════════════════ */
+
 const API = {
   /**
    * Generic fetch wrapper with JSON parsing and error handling.
@@ -55,21 +49,19 @@ const API = {
     return response.json();
   },
 
-  // ── Products ──────────────────────────────────────────────────
   getProducts:         ()       => API.apiFetch('/products'),
   getProduct:          (id)     => API.apiFetch(`/products/${id}`),
   createProduct:       (data)   => API.apiFetch('/products', { method: 'POST', body: data }),
   updateProduct:       (id, d)  => API.apiFetch(`/products/${id}`, { method: 'PUT', body: d }),
   deleteProduct:       (id)     => API.apiFetch(`/products/${id}`, { method: 'DELETE' }),
 
-  // ── Suppliers ─────────────────────────────────────────────────
   getSuppliers:        ()       => API.apiFetch('/suppliers'),
   getSupplier:         (id)     => API.apiFetch(`/suppliers/${id}`),
   createSupplier:      (data)   => API.apiFetch('/suppliers', { method: 'POST', body: data }),
   updateSupplier:      (id, d)  => API.apiFetch(`/suppliers/${id}`, { method: 'PUT', body: d }),
   deleteSupplier:      (id)     => API.apiFetch(`/suppliers/${id}`, { method: 'DELETE' }),
 
-  // ── Purchase Orders ───────────────────────────────────────────
+
   getPurchaseOrders:   (params) => API.apiFetch(`/purchase-orders${Utils.buildQuery(params)}`),
   getPurchaseOrder:    (id)     => API.apiFetch(`/purchase-orders/${id}`),
   createPurchaseOrder: (data)   => API.apiFetch('/purchase-orders', { method: 'POST', body: data }),
@@ -77,15 +69,12 @@ const API = {
   patchPOStatus:       (id, s)  => API.apiFetch(`/purchase-orders/${id}/status`, { method: 'PATCH', body: { status: s } }),
   deletePurchaseOrder: (id)     => API.apiFetch(`/purchase-orders/${id}`, { method: 'DELETE' }),
 
-  // ── Transactions ──────────────────────────────────────────────
+
   getTransactions:     ()       => API.apiFetch('/transactions'),
   createTransaction:   (data)   => API.apiFetch('/transactions', { method: 'POST', body: data }),
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   UTILS
-   Pure helper functions with no side-effects.
-════════════════════════════════════════════════════════════════════ */
+
 const Utils = {
   /**
    * Build a URL query string from a params object, omitting falsy values.
@@ -151,10 +140,6 @@ const Utils = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   RENDER
-   HTML-generating helpers shared across views.
-════════════════════════════════════════════════════════════════════ */
 const Render = {
   /**
    * Render a status badge for Purchase Order status values.
@@ -213,10 +198,7 @@ const Render = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   MODAL
-   Single reusable dialog driven by a config object.
-════════════════════════════════════════════════════════════════════ */
+
 const Modal = {
   _currentConfig: null,
 
@@ -359,10 +341,6 @@ const Modal = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   NOTIFY
-   Toast notification system — top-right, auto-dismiss after 3s.
-════════════════════════════════════════════════════════════════════ */
 const Notify = {
   /**
    * Show a toast notification.
@@ -402,24 +380,16 @@ const Notify = {
   warning: (title, msg) => Notify.show('warning', title, msg),
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   SPINNER
-   Global loading overlay helper.
-════════════════════════════════════════════════════════════════════ */
+
 const Spinner = {
   show() { document.getElementById('spinner-overlay').classList.remove('hidden'); },
   hide() { document.getElementById('spinner-overlay').classList.add('hidden'); },
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   VIEWS
-   Each view has a `render()` method that populates #view-container.
-════════════════════════════════════════════════════════════════════ */
+
 const Views = {
 
-  /* ──────────────────────────────────────────────────────────────
-     DASHBOARD VIEW
-  ────────────────────────────────────────────────────────────── */
+
   async dashboard() {
     const container = document.getElementById('view-container');
     container.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>Loading dashboard…</p></div>`;
@@ -502,9 +472,7 @@ const Views = {
       ${Render.tableCard(recentHtml)}`;
   },
 
-  /* ──────────────────────────────────────────────────────────────
-     PRODUCTS VIEW
-  ────────────────────────────────────────────────────────────── */
+
   async products() {
     const container = document.getElementById('view-container');
     container.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>Loading products…</p></div>`;
@@ -606,9 +574,7 @@ const Views = {
     Views._deleteProduct = (id, name) => deleteProduct(id, name);
   },
 
-  /* ──────────────────────────────────────────────────────────────
-     SUPPLIERS VIEW
-  ────────────────────────────────────────────────────────────── */
+
   async suppliers() {
     const container = document.getElementById('view-container');
     container.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>Loading suppliers…</p></div>`;
@@ -702,9 +668,7 @@ const Views = {
     Views._deleteSupplier = (id, name) => deleteSupplier(id, name);
   },
 
-  /* ──────────────────────────────────────────────────────────────
-     PURCHASE ORDERS VIEW
-  ────────────────────────────────────────────────────────────── */
+
   async purchaseOrders(filterStatus = '') {
     const container = document.getElementById('view-container');
     container.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>Loading purchase orders…</p></div>`;
@@ -883,9 +847,7 @@ const Views = {
     Views._deletePO     = (id) => deletePO(id);
   },
 
-  /* ──────────────────────────────────────────────────────────────
-     TRANSACTIONS VIEW
-  ────────────────────────────────────────────────────────────── */
+
   async transactions() {
     const container = document.getElementById('view-container');
     container.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>Loading transactions…</p></div>`;
@@ -973,10 +935,7 @@ const Views = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   NAVIGATION
-   Manages active state, topbar labels, and add-button visibility.
-════════════════════════════════════════════════════════════════════ */
+
 const Navigation = {
   /** View configuration: maps data-view attribute to display metadata. */
   _views: {
@@ -1031,10 +990,7 @@ const Navigation = {
   },
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   MODAL EVENT BINDINGS
-   Wire up close/cancel/submit handlers once on page load.
-════════════════════════════════════════════════════════════════════ */
+
 const initModal = () => {
   document.getElementById('modal-close-btn').addEventListener('click',  Modal.close);
   document.getElementById('modal-cancel-btn').addEventListener('click', Modal.close);
@@ -1051,10 +1007,6 @@ const initModal = () => {
   });
 };
 
-/* ═══════════════════════════════════════════════════════════════════
-   BOOTSTRAP
-   Entry point — runs after DOM is ready.
-════════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   Navigation.init();
   initModal();
